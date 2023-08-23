@@ -9,8 +9,8 @@ from .blindStatus import GeneralBlindStatus, VenetianBlindStatus
 
 
 class AsyncWaremaDevice(BaseWaremaDevice):
-    async def _setStatus(self, setting0=255, setting1=255, setting2=255, setting3=255):
-        await self.hub.channelCommandRequest(self.channel, setting0, setting1, setting2, setting3)
+    async def _setStatus(self, function=3, setting0=255, setting1=255, setting2=255, setting3=255):
+        await self.hub.channelCommandRequest(self.channel, function, setting0, setting1, setting2, setting3)
 
     async def _getStatus(self) -> tuple[int, ...]:
         response = await self.hub.mb8Read(block=1, adr=0, eui=self.SN, length=7)
@@ -23,6 +23,9 @@ class AsyncWaremaDevice(BaseWaremaDevice):
             print(f"Failed to extract bytes from bytearray {fields} / sequenceLock: {response['sequenceLockActive']}")
             raise e
 
+    async def setStop(self):
+        await self._setStatus(1)
+
 
 class AsyncGeneralBlind(AsyncWaremaDevice, GeneralBlind):
     async def setPosition(self, position: int) -> None:
@@ -31,7 +34,7 @@ class AsyncGeneralBlind(AsyncWaremaDevice, GeneralBlind):
         else:
             raise ValueError(f'Given position should be between {self._minimum_position} and {self._maximum_position}')
 
-        await self._setStatus(position)
+        await self._setStatus(setting0=position)
 
     async def getPosition(self) -> GeneralBlindStatus:
         data = await self._getStatus()
@@ -59,7 +62,7 @@ class AsyncVenetianBlind(AsyncWaremaDevice, VenetianBlind):
         else:
             tilt = 255
 
-        await self._setStatus(position, tilt)
+        await self._setStatus(setting0=position, setting1=tilt)
 
     async def getPosition(self) -> VenetianBlindStatus:
         data = await self._getStatus()

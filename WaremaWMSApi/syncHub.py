@@ -21,9 +21,9 @@ class SyncWaremaHub(BaseHub):
         self.status = self.request(path="info")
         return self.status
 
-    def channelCommandRequest(self, ch: int, s0: int, s1: int, s2: int, s3: int) -> None:
+    def channelCommandRequest(self, ch: int, fn: int, s0: int, s1: int, s2: int, s3: int) -> None:
         self.post(
-            self._channelCommandRequest(ch, s0, s1, s2, s3)
+            self._channelCommandRequest(ch, fn, s0, s1, s2, s3)
         )
 
     def manualCommandRequest(self, sn: int) -> dict:

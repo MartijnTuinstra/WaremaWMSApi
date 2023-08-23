@@ -22,9 +22,9 @@ class AsyncWaremaHub(BaseHub):
         self.status = await self.request(path="info")
         return self.status
 
-    async def channelCommandRequest(self, ch: int, s0: int, s1: int, s2: int, s3: int) -> None:
+    async def channelCommandRequest(self, ch: int, fn: int, s0: int, s1: int, s2: int, s3: int) -> None:
         await self.post(
-            self._channelCommandRequest(ch, s0, s1, s2, s3)
+            self._channelCommandRequest(ch, fn, s0, s1, s2, s3)
         )
 
     async def manualCommandRequest(self, sn: int) -> dict:

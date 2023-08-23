@@ -71,12 +71,12 @@ class BaseHub:
         return self.devices
 
     @staticmethod
-    def _channelCommandRequest(ch: int, s0: int, s1: int, s2: int, s3: int) -> str:
+    def _channelCommandRequest(ch: int, fn: int, s0: int, s1: int, s2: int, s3: int) -> str:
         return genericPostMessage(
             action="channelCommandRequest",
             parameters={
                 "channel": ch,
-                "functionCode": 3,
+                "functionCode": fn,
                 "setting0": s0,
                 "setting1": s1,
                 "setting2": s2,
