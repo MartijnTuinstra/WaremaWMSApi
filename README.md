@@ -13,7 +13,7 @@ $ python3 setup.py install
 
 ```
 # Create Hub
-hub = WaremaHub("webcontrol.home")
+hub = SyncWaremaHub("webcontrol.home")
 ```
 This will connect and load all devices.
 
