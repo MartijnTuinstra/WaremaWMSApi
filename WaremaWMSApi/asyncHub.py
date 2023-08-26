@@ -15,6 +15,14 @@ class AsyncWaremaHub(BaseHub):
         super().__init__(web_address, ip_port)
         self.session = aiohttp.ClientSession(self.web_address)
 
+    async def __aenter__(self) -> "AsyncWaremaHub":
+        if self.session.closed:
+            self.session = aiohttp.ClientSession(self.web_address)
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.close_session()
+
     async def close_session(self):
         await self.session.close()
 
