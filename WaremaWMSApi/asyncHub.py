@@ -60,6 +60,7 @@ class AsyncWaremaHub(BaseHub):
         LOGGER.debug("Get message from: %s/%s", self.web_address, path)
 
         async with self.session.get(f"/{path}", timeout=2) as r:
+            await r.content.wait_eof()
             return self._processResponse(await r.content.readany())
 
     async def post(self, message: str = "", path: str = "postMessage", base64Data: bool = False) -> dict:
@@ -67,4 +68,5 @@ class AsyncWaremaHub(BaseHub):
         data = encode(message.encode("ascii"))
 
         async with self.session.post(f"/{path}", data=data, timeout=2) as r:
+            await r.content.wait_eof()
             return self._processResponse(await r.content.readany())
